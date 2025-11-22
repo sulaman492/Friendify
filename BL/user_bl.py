@@ -2,21 +2,6 @@ import re
 import os
 import json
 class User:
-    # def __init__(self,id,username,email,password):
-    #     if not username or username.strip()=="" or not password or password.strip()=="" or not email or email.strip()=="":
-    #         raise ValueError("All fields are required")
-    #     if len(username)<5:
-    #         raise ValueError("Username must be atleast 5 charecters long")
-    #     if len(password)<8:
-    #         raise ValueError("Password must be atleast 8 charecters long")
-    #     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    #     if not re.match(pattern, email):
-    #         raise ValueError("Invalid email format")
-            
-    #     self.username=username
-    #     self.id=id
-    #     self.email=email
-    #     self.password=password
 
     def __init__(self,id,username="",email="",password="",first_name="",last_name="",country="",bio=""):
         self.username=username
