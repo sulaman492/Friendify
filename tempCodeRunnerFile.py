@@ -59,7 +59,7 @@ def show_home_page():
     home_page=HomePage(root,on_profile=show_profile,on_post=show_users_post,on_feed_load=lambda target_frame:show_feed(target_frame))
 
 def show_feed(target_frame):
-    for widget in target_frame.winfo.children():
+    for widget in target_frame.winfo_children():
         widget.destroy()
     feed_page=FeedPage(target_frame,user,pm)
 
