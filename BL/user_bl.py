@@ -102,15 +102,14 @@ class User:
             if u["email"]==email:
                 return User(
                     u["id"],
-                    u["email"],
-                    u["password"],
-                    u["username"],
-                    u.get("first_name",""),
-                    u.get("last_name",""),
-                    u.get("country",""),
-                    u.get("bio","")
-                )
-        
+                    u["username"],  
+                    u["email"],     
+                    u["password"],  
+                    u.get("first_name", ""),
+                    u.get("last_name", ""),
+                    u.get("country", ""),
+                    u.get("bio", "")
+                )              
         return None
 
     @staticmethod

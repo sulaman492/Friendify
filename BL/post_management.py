@@ -1,5 +1,6 @@
 from collections import deque
 from BL.post_bl import Post
+from BL.user_bl import User
 from datetime import datetime
 import os
 import json
@@ -9,7 +10,7 @@ class PostManagement:
         self.posts=deque()  
         self.file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "DL", "post.json")
         os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
-        self._load_posts()
+        self.load_posts()
 
     def load_posts(self):
         if not os.path.exists(self.file_path):
@@ -22,8 +23,11 @@ class PostManagement:
                 self.posts=deque([
                      Post(
                           post_id=p["post_id"],
-                          user=p["user"],
-                          content=p["content"]
+                          user=User(
+                                id=p["user"]["id"],
+                                username=p["user"]["username"],
+                                email=p["user"]["email"],
+                            ),content=p["content"]
                      ) for p in data.get("posts",[])
                 ])
 
@@ -38,7 +42,7 @@ class PostManagement:
                 "user":{
                     "id":post.user.id,
                     "username":post.user.username,
-                    "email":post.user.username
+                    "email":post.user.email
                     },
                 "content":post.content,
                 "timestamp":post.timestamp.isoformat()
@@ -73,3 +77,6 @@ class PostManagement:
                 self.save_post()
                 return True
         return False
+    
+    def get_all_posts(self):
+        return deque(sorted(self.posts,key = lambda p:p.timestamp,reverse=True))

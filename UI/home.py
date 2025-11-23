@@ -1,9 +1,11 @@
 import customtkinter as ctk
 
 class HomePage:
-    def __init__(self, master,on_profile):
+    def __init__(self, master,on_profile,on_post,on_feed_load):
         self.master = master
         self.on_profile=on_profile
+        self.on_post=on_post
+        self.on_feed_load=on_feed_load
         master.geometry("1200x700")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
@@ -23,7 +25,7 @@ class HomePage:
         self.feed_btn = ctk.CTkButton(self.left_panel, text="Feed", fg_color="orange", hover_color="#c77000")
         self.feed_btn.pack(pady=20, padx=10, fill="x")
 
-        self.post_btn = ctk.CTkButton(self.left_panel, text="Post", fg_color="orange", hover_color="#c77000")
+        self.post_btn = ctk.CTkButton(self.left_panel, text="Post", fg_color="orange", hover_color="#c77000",command=self.on_Click_post)
         self.post_btn.pack(pady=20, padx=10, fill="x")
 
         self.friends_btn = ctk.CTkButton(self.left_panel, text="Friends", fg_color="orange", hover_color="#c77000")
@@ -37,6 +39,13 @@ class HomePage:
         self.content_label = ctk.CTkLabel(self.right_panel, text="Welcome to Friendify!", font=("Segoe UI", 24), text_color="orange")
         self.content_label.pack(pady=50)
 
+        self.on_feed_load(self.right_panel)
+
         # You can later attach commands to buttons to change content_label or load frames
     def on_click_profile(self):
         self.on_profile(self.right_panel)
+
+    def on_Click_post(self):
+        self.on_post(self.right_panel)
+
+    
