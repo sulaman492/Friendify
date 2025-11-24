@@ -5,15 +5,11 @@ from UI.home import HomePage
 from UI.profile import ProfilePage
 from UI.post import PostPage
 from UI.feed import FeedPage
-from UI.friends import FriendsPage
 from BL import user_bl
-from BL.friend_manager import FriendManager
 from BL.post_management import PostManagement
-
 
 user=None
 pm=PostManagement()
-fm=FriendManager()
 
 def handle_signup(username,email,password):
     try:
@@ -57,13 +53,6 @@ def handle_undo_post(post_page):
     user_posts = [p for p in pm.posts if p.user.id == user.id]
     post_page.load_posts(user_posts)
 
-def handle_send_request(sender_id, receiver_id):
-    success = fm.send_request(sender_id, receiver_id)
-    if success:
-        print(f"Friend request sent from {sender_id} to {receiver_id}")
-    else:
-        print("Request already exists or failed.")    
-
 def handle_get_all_post():
     return pm.get_all_posts()
 
@@ -80,7 +69,7 @@ def show_signup():
 
 def show_home_page():
     clear_window()
-    home_page=HomePage(root,on_profile=show_profile,on_post=show_users_post,on_feed_load=lambda target_frame:show_feed(target_frame),on_friends=show_friends)
+    home_page=HomePage(root,on_profile=show_profile,on_post=show_users_post,on_feed_load=lambda target_frame:show_feed(target_frame))
 
 def show_feed(target_frame):
     for widget in target_frame.winfo_children():
@@ -99,15 +88,11 @@ def show_users_post(target_frame):
     user_posts = [p for p in pm.posts if p.user.id == user.id]
     post_page.load_posts(user_posts)
     
-def show_friends(target_frame):
-    for widget in target_frame.winfo_children():
-        widget.destroy()    
-    all_user=user_bl.User.get_all_users()
-    friend_page=FriendsPage(target_frame,user,fm,all_user,on_send_request=handle_send_request)
-
 def clear_window():
     for widget in root.winfo_children():
         widget.destroy()
+
+
 def main():
     global root
     root=ctk.CTk()

@@ -15,8 +15,8 @@
             "username": "zain12",
             "email": "zain@gmai.com",
             "password": "123321123",
-            "first_name": "Sulaman",
-            "last_name": "Shahzad",
+            "first_name": "zain",
+            "last_name": "ijaz",
             "country": "Pakistan",
             "bio": "CS undergrad Genz"
         },
@@ -24,7 +24,12 @@
             "id": 2,
             "username": "yasir",
             "email": "yasir@gmail.com",
-            "password": "12345678"
+            "password": "12345678",
+            "first_name": "yasir",
+            "last_name": "asad",
+            "country": "Pakistan",
+            "bio": "hello world specialist"
+        
         }
     ]
 }

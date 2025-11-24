@@ -1,7 +1,6 @@
 import customtkinter as ctk
 
 class SignupPage:
-    # UI will now be split into left (image) and right (form) sections
     def __init__(self, master, on_signup, on_login):
         self.master = master
         self.on_signup = on_signup
@@ -15,33 +14,13 @@ class SignupPage:
         self.frame = ctk.CTkFrame(master, fg_color="black")
         self.frame.pack(fill="both", expand=True)
 
-        # MAIN SPLIT FRAME
-        self.split_frame = ctk.CTkFrame(self.frame, fg_color="black")
-        self.split_frame.pack(fill="both", expand=True)
-
-        # LEFT SIDE IMAGE
-        self.left_frame = ctk.CTkFrame(self.split_frame, fg_color="black")
-        self.left_frame.pack(side="left", fill="both", expand=True)
-
-        self.app_image = ctk.CTkImage(light_image=None, dark_image=None, size=(420, 420))
-        try:
-            from PIL import Image
-            img = Image.open("/img/signup.png")
-            self.app_image = ctk.CTkImage(img, size=(420, 420))
-        except:
-            pass
-
-        self.image_label = ctk.CTkLabel(self.left_frame, image=self.app_image, text="")
-        self.image_label.place(relx=0.5, rely=0.5, anchor="center")
-
-        # RIGHT SIDE FORM
-        self.center_frame = ctk.CTkFrame(self.split_frame, fg_color="black")
-        self.center_frame.pack(side="right", fill="both", expand=True, padx=40)
+        self.center_frame = ctk.CTkFrame(self.frame, fg_color="black")
+        self.center_frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # -------- HEADING --------
         title = ctk.CTkLabel(
             self.center_frame,
-            text="★ Create Your Account ★",
+            text=" Join Friendify ",
             font=("Segoe UI Black", 34),
             text_color="#FF8C00"
         )
@@ -63,7 +42,7 @@ class SignupPage:
         # -------- SIGN UP BUTTON --------
         signup_btn = ctk.CTkButton(
             self.center_frame,
-            text="Sign Up",
+            text="Get",
             fg_color="#FF8C00",
             hover_color="#e67e00",
             text_color="black",
@@ -125,7 +104,8 @@ class SignupPage:
         password = self.password.get()
         confirm_password = self.confirm_password.get()
         username = self.username.get()
-
+        print(password)
+        print(confirm_password)
         if password != confirm_password:
             print("Error: Passwords do not match!")
             return

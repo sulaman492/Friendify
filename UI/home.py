@@ -1,11 +1,12 @@
 import customtkinter as ctk
 
 class HomePage:
-    def __init__(self, master,on_profile,on_post,on_feed_load):
+    def __init__(self, master,on_profile,on_post,on_feed_load,on_friends):
         self.master = master
         self.on_profile=on_profile
         self.on_post=on_post
         self.on_feed_load=on_feed_load
+        self.on_friends=on_friends
         master.geometry("1200x700")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
@@ -28,7 +29,7 @@ class HomePage:
         self.post_btn = ctk.CTkButton(self.left_panel, text="Post", fg_color="orange", hover_color="#c77000",command=self.on_Click_post)
         self.post_btn.pack(pady=20, padx=10, fill="x")
 
-        self.friends_btn = ctk.CTkButton(self.left_panel, text="Friends", fg_color="orange", hover_color="#c77000")
+        self.friends_btn = ctk.CTkButton(self.left_panel, text="Friends", fg_color="orange", hover_color="#c77000",command=self.friend_action)
         self.friends_btn.pack(pady=20, padx=10, fill="x")
 
         # ---------- RIGHT PANEL ----------
@@ -48,4 +49,5 @@ class HomePage:
     def on_Click_post(self):
         self.on_post(self.right_panel)
 
-    
+    def friend_action(self):
+        self.on_friends(self.right_panel)

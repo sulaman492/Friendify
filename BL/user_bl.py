@@ -145,5 +145,41 @@ class User:
             return True
         
         return False
-                
     
+    @staticmethod
+    def get_all_users():
+        project_root = os.path.dirname(os.path.dirname(__file__))  
+        dl_folder = os.path.join(project_root, "DL")
+        os.makedirs(dl_folder, exist_ok=True)
+        file_path = os.path.join(dl_folder, "user.json")
+    
+        # If file doesn't exist → return empty list
+        if not os.path.exists(file_path):
+            return []
+    
+        try:
+            with open(file_path, "r") as f:
+                data = json.load(f)
+        except:
+            # corrupted file → return empty list safely
+            return []
+    
+        users = []
+        for u in data.get("users", []):
+            users.append(
+                User(
+                    u["id"],
+                    u["username"],
+                    u["email"],
+                    u["password"],
+                    u.get("first_name", ""),
+                    u.get("last_name", ""),
+                    u.get("country", ""),
+                    u.get("bio", "")
+                )
+            )
+    
+        return users
+    
+                    
+        

@@ -21,7 +21,7 @@
             },
             "content": "Anyone knows a good place for coding practice?",
             "timestamp": "2025-11-23T15:52:08.356649",
-            "likes": 2,
+            "likes": 3,
             "comments": [
                 {
                     "comment_id": 1,
@@ -54,7 +54,7 @@
             },
             "content": "Hello world! Excited to join this platform.",
             "timestamp": "2025-11-23T15:52:08.356651",
-            "likes": 14,
+            "likes": 16,
             "comments": [
                 {
                     "comment_id": 1,
@@ -120,6 +120,30 @@
                     "timestamp": "2025-11-23T19:29:27.834958"
                 }
             ]
+        },
+        {
+            "post_id": 7,
+            "user": {
+                "id": 0,
+                "username": "sulaman",
+                "email": "helloworld@gmail.com"
+            },
+            "content": "hello guys",
+            "timestamp": "2025-11-24T12:10:14.165767",
+            "likes": 2,
+            "comments": []
+        },
+        {
+            "post_id": 8,
+            "user": {
+                "id": 0,
+                "username": "sulaman",
+                "email": "helloworld@gmail.com"
+            },
+            "content": "coding",
+            "timestamp": "2025-11-24T12:13:11.206526",
+            "likes": 0,
+            "comments": []
         }
     ]
 }
