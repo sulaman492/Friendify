@@ -1,32 +1,49 @@
 import customtkinter as ctk
 
 class SignupPage:
-    def __init__(self, master, on_signup,on_login):
+    # UI will now be split into left (image) and right (form) sections
+    def __init__(self, master, on_signup, on_login):
         self.master = master
-        self.on_signup = on_signup  # callback function in main.py
-        self.on_login=on_login
+        self.on_signup = on_signup
+        self.on_login = on_login
 
-        # Window size for big screen
         master.geometry("900x650")
 
-        # Theme
         ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("dark-blue")
 
-        # ---------- FULL SCREEN CONTAINER ----------
+        # -------- FULL BACKGROUND --------
         self.frame = ctk.CTkFrame(master, fg_color="black")
         self.frame.pack(fill="both", expand=True)
 
-        # CENTER FRAME (keeps UI centered on all screens)
-        self.center_frame = ctk.CTkFrame(self.frame, fg_color="black")
-        self.center_frame.place(relx=0.5, rely=0.5, anchor="center")
+        # MAIN SPLIT FRAME
+        self.split_frame = ctk.CTkFrame(self.frame, fg_color="black")
+        self.split_frame.pack(fill="both", expand=True)
 
-        # ---------- STYLISH HEADING ----------
+        # LEFT SIDE IMAGE
+        self.left_frame = ctk.CTkFrame(self.split_frame, fg_color="black")
+        self.left_frame.pack(side="left", fill="both", expand=True)
+
+        self.app_image = ctk.CTkImage(light_image=None, dark_image=None, size=(420, 420))
+        try:
+            from PIL import Image
+            img = Image.open("/img/signup.png")
+            self.app_image = ctk.CTkImage(img, size=(420, 420))
+        except:
+            pass
+
+        self.image_label = ctk.CTkLabel(self.left_frame, image=self.app_image, text="")
+        self.image_label.place(relx=0.5, rely=0.5, anchor="center")
+
+        # RIGHT SIDE FORM
+        self.center_frame = ctk.CTkFrame(self.split_frame, fg_color="black")
+        self.center_frame.pack(side="right", fill="both", expand=True, padx=40)
+
+        # -------- HEADING --------
         title = ctk.CTkLabel(
             self.center_frame,
             text="★ Create Your Account ★",
             font=("Segoe UI Black", 34),
-            text_color=("orange")
+            text_color="#FF8C00"
         )
         title.pack(pady=(10, 25))
 
@@ -38,18 +55,17 @@ class SignupPage:
         )
         subtitle.pack(pady=(0, 25))
 
-        # Create All Input Fields With Better Styling
         self.username = self.create_styled_input("👤", "Enter Username")
         self.email = self.create_styled_input("📧", "Enter Email")
         self.password = self.create_styled_input("🔒", "Enter Password", show="*")
         self.confirm_password = self.create_styled_input("🔒", "Confirm Password", show="*")
 
-        # ---------- SIGN UP BUTTON ----------
+        # -------- SIGN UP BUTTON --------
         signup_btn = ctk.CTkButton(
             self.center_frame,
             text="Sign Up",
-            fg_color="orange",
-            hover_color="#c77000",
+            fg_color="#FF8C00",
+            hover_color="#e67e00",
             text_color="black",
             width=250,
             height=45,
@@ -59,17 +75,18 @@ class SignupPage:
         )
         signup_btn.pack(pady=25)
 
-        # ---------- LOGIN LINK ----------
+        # -------- LOGIN LINK --------
         login_btn = ctk.CTkButton(
             self.center_frame,
             text="Already have an account? Login",
             font=("Segoe UI", 15),
-            text_color="orange",
+            text_color="#FF8C00",
+            fg_color="transparent",
+            hover_color="#333333",
             command=self.on_login_click
         )
         login_btn.pack(pady=5)
 
-    # ----------- BEAUTIFUL INPUT FIELD CREATOR -----------
     def create_styled_input(self, icon, placeholder, show=""):
         outer_frame = ctk.CTkFrame(
             self.center_frame,
@@ -83,7 +100,7 @@ class SignupPage:
             text=icon,
             font=("Arial", 20),
             width=40,
-            text_color="orange"
+            text_color="#FF8C00"
         )
         icon_label.pack(side="left", padx=8)
 
@@ -96,24 +113,23 @@ class SignupPage:
             corner_radius=10,
             fg_color="#2b2b2b",
             text_color="white",
-            placeholder_text_color="#aaaaaa",
+            placeholder_text_color="#888888",
             show=show
         )
         entry.pack(side="left", padx=5, pady=8)
 
         return entry
 
-    # -------- BUTTON ACTION --------
     def signup_action(self):
-        email=self.email.get()
-        password=self.password.get()
-        confirm_password=self.password.get()
-        username=self.username.get()
+        email = self.email.get()
+        password = self.password.get()
+        confirm_password = self.confirm_password.get()
+        username = self.username.get()
 
-        if password!=confirm_password:
-            raise ValueError("Passowrds do not match ! ")
-        
-        self.on_signup(username,email,password)
-    
+        if password != confirm_password:
+            print("Error: Passwords do not match!")
+            return
+        self.on_signup(username, email, password)
+
     def on_login_click(self):
         self.on_login()

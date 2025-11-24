@@ -1,22 +1,22 @@
 import customtkinter as ctk
 
 class PostPage:
-    def __init__(self, master, current_user, on_create_post,on_edit_post):
-        """
-        master: parent frame/window
-        current_user: currently logged-in user object
-        post_manager: instance of PostManagement
-        on_create_post: callback function when user creates a post
-        """
+    def __init__(self, master, current_user, on_create_post, on_edit_post, on_delete_post, on_undo_post, on_get_posts):
         self.master = master
         self.current_user = current_user
         self.on_create_post = on_create_post
-        self.on_edit_post=on_edit_post
-
+        self.on_edit_post = on_edit_post
+        self.on_delete_post = on_delete_post    # <--- added
+        self.on_undo_post = on_undo_post        # <--- added
+        self.on_get_posts = on_get_posts        # <--- added
+       
         # Main Frame
         self.frame = ctk.CTkFrame(master, fg_color="#1a1a1a")
         self.frame.pack(fill="both", expand=True)
 
+        self.footer = ctk.CTkFrame(self.frame, fg_color="#1a1a1a")
+        self.footer.pack(fill="x", pady=10)
+        
         # Top container for creating a new post
         self.create_post_frame = ctk.CTkFrame(self.frame, fg_color="#2b2b2b", corner_radius=10)
         self.create_post_frame.pack(pady=20, padx=20, fill="x")
@@ -73,8 +73,7 @@ class PostPage:
         for post in posts:
             self.create_post_card(post)
     
-    def create_post_card(self,post):
-      
+    def create_post_card(self, post):
         card = ctk.CTkFrame(self.posts_container, fg_color="#2b2b2b", corner_radius=10)
         card.pack(fill="x", pady=10, padx=10)
 
@@ -98,6 +97,36 @@ class PostPage:
                                    command=lambda: self.delete_post_ui(post))
         delete_btn.grid(row=0, column=1, padx=5)
 
+    def delete_post_ui(self, post):
+        # Call the PostManagement delete method
+        if self.on_delete_post(post.post_id):
+            # Refresh posts after deletion
+            user_posts = [p for p in self.on_get_posts() if p.user.id == self.current_user.id]
+            self.load_posts(user_posts)
+            # Show temporary undo button
+            self.show_undo_button()
+
+    def show_undo_button(self):
+    # destroy previous undo button
+        if hasattr(self, 'undo_btn') and self.undo_btn.winfo_exists():
+            self.undo_btn.destroy()
+    
+        self.undo_btn = ctk.CTkButton(
+            self.footer,
+            text="Undo Last Delete",
+            fg_color="green",
+            width=200,
+            command=self.undo_last_delete
+        )
+        self.undo_btn.pack(pady=5)
+
+
+    def undo_last_delete(self):
+        if self.on_undo_post():
+            self.load_posts(self.on_get_posts())
+            # Optionally hide the button after undo
+            if hasattr(self, 'undo_btn') and self.undo_btn.winfo_exists():
+                self.undo_btn.destroy()
 
     def edit_post_ui(self, post):
         edit_win = ctk.CTkToplevel()
@@ -118,3 +147,5 @@ class PostPage:
 
         save_btn = ctk.CTkButton(edit_win, text="Save", command=confirm)
         save_btn.pack(pady=10)
+
+    

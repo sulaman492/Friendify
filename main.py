@@ -43,6 +43,15 @@ def handle_edit_post(post_id ,content,post_page):
     user_posts = [p for p in pm.posts if p.user.id == user.id]
     post_page.load_posts(user_posts)
 
+def handle_delete_post(post_id):
+    pm.delete_post(post_id)
+
+def handle_undo_post():
+    pm.undo_post()
+
+def handle_get_all_post():
+    return pm.get_all_posts()
+
 def handle_create_post(content):
     pm.create_post(user,content) 
 
@@ -71,7 +80,7 @@ def show_profile(target_frame):
 def show_users_post(target_frame):
     for widget in target_frame.winfo_children():
         widget.destroy()
-    post_page=PostPage(target_frame,user,on_create_post=handle_create_post,on_edit_post=lambda post_id, new_content: handle_edit_post(post_id, new_content, post_page))
+    post_page=PostPage(target_frame,user,on_create_post=handle_create_post,on_edit_post=lambda post_id, new_content: handle_edit_post(post_id, new_content, post_page),on_delete_post=handle_delete_post, on_undo_post=handle_undo_post, on_get_posts=handle_get_all_post)
     user_posts = [p for p in pm.posts if p.user.id == user.id]
     post_page.load_posts(user_posts)
     

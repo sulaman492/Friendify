@@ -3,12 +3,14 @@ from BL.post_bl import Post
 from BL.user_bl import User
 from datetime import datetime
 from BL.comment_bl import Comment
+from queue import LifoQueue
 import os
 import json
 
 class PostManagement:
     def __init__(self):
         self.posts=deque()  
+        self.deleted_posts=LifoQueue(maxsize=10)
         self.file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "DL", "post.json")
         os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
         self.load_posts()
@@ -84,10 +86,20 @@ class PostManagement:
         for post in self.posts:
             if post.post_id==post_id:
                 self.posts.remove(post)
+                if not self.deleted_posts.full():
+                    self.deleted_posts.put(post)
                 self.save_post()
                 return True
         return False
     
+    def undo_post(self):
+        if self.deleted_posts.empty():
+            return False
+        post=self.deleted_posts.get()
+        self.posts.append(post)
+        self.save_post()
+        return True
+
     def get_all_posts(self):
         return deque(sorted(self.posts,key = lambda p:p.timestamp,reverse=True))
     
