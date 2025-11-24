@@ -29,7 +29,12 @@
             "last_name": "asad",
             "country": "Pakistan",
             "bio": "hello world specialist"
-        
+        },
+        {
+            "id": 3,
+            "username": "saadsadi123",
+            "email": "saad@gmail.com",
+            "password": "12345678"
         }
     ]
 }

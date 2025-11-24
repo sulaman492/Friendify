@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from PIL import Image
+import os
 
 class SignupPage:
     def __init__(self, master, on_signup, on_login):
@@ -7,14 +9,53 @@ class SignupPage:
         self.on_login = on_login
 
         master.geometry("900x650")
-
         ctk.set_appearance_mode("dark")
 
         # -------- FULL BACKGROUND --------
         self.frame = ctk.CTkFrame(master, fg_color="black")
         self.frame.pack(fill="both", expand=True)
 
-        self.center_frame = ctk.CTkFrame(self.frame, fg_color="black")
+        # -------- LEFT & RIGHT FRAMES --------
+        self.left_frame = ctk.CTkFrame(self.frame, fg_color="black", width=450)
+        self.left_frame.pack(side="left", fill="both", expand=True)
+
+        self.right_frame = ctk.CTkFrame(self.frame, fg_color="black", width=450)
+        self.right_frame.pack(side="right", fill="both", expand=True)
+
+        # -------- LEFT IMAGE --------
+        image_path = os.path.join("UI", "img", "signup.png")
+        original_image = Image.open(image_path)
+
+        # Left frame size
+        frame_width, frame_height = 450, 650
+
+        # Preserve aspect ratio
+        img_ratio = original_image.width / original_image.height
+        frame_ratio = frame_width / frame_height
+
+        if img_ratio > frame_ratio:
+            # Image is wider than frame ratio, fit width
+            new_width = frame_width
+            new_height = int(frame_width / img_ratio)
+        else:
+            # Image is taller than frame ratio, fit height
+            new_height = frame_height
+            new_width = int(frame_height * img_ratio)
+
+        resized_image = original_image.resize((new_width, new_height))
+        self.image = ctk.CTkImage(resized_image, size=(new_width, new_height))
+
+        img_label = ctk.CTkLabel(
+            self.left_frame,
+            image=self.image,
+            text="",
+            fg_color="black"
+        )
+        # Center the image
+        img_label.place(relx=0.5, rely=0.5, anchor="center")
+
+        # -------- RIGHT SIDE CONTENT --------
+        self.center_frame = ctk.CTkFrame(self.right_frame, fg_color="black")
         self.center_frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # -------- HEADING --------
@@ -42,7 +83,7 @@ class SignupPage:
         # -------- SIGN UP BUTTON --------
         signup_btn = ctk.CTkButton(
             self.center_frame,
-            text="Get",
+            text="Get Started",
             fg_color="#FF8C00",
             hover_color="#e67e00",
             text_color="black",
@@ -104,8 +145,6 @@ class SignupPage:
         password = self.password.get()
         confirm_password = self.confirm_password.get()
         username = self.username.get()
-        print(password)
-        print(confirm_password)
         if password != confirm_password:
             print("Error: Passwords do not match!")
             return
