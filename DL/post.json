@@ -9,8 +9,19 @@
             },
             "content": "Just finished my workout. Feeling pumped!",
             "timestamp": "2025-11-23T15:52:08.356647",
-            "likes": 1,
-            "comments": []
+            "comments": [
+                {
+                    "comment_id": 1,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "good ot know",
+                    "timestamp": "2025-11-24T23:33:02.132314"
+                }
+            ],
+            "liked_users": []
         },
         {
             "post_id": 4,
@@ -21,7 +32,6 @@
             },
             "content": "Anyone knows a good place for coding practice?",
             "timestamp": "2025-11-23T15:52:08.356649",
-            "likes": 3,
             "comments": [
                 {
                     "comment_id": 1,
@@ -42,7 +52,30 @@
                     },
                     "text": "hackerrank",
                     "timestamp": "2025-11-23T21:11:51.841238"
+                },
+                {
+                    "comment_id": 3,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "no",
+                    "timestamp": "2025-11-24T23:32:33.712240"
+                },
+                {
+                    "comment_id": 4,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "no",
+                    "timestamp": "2025-11-24T23:32:34.847015"
                 }
+            ],
+            "liked_users": [
+                "sulaman"
             ]
         },
         {
@@ -54,7 +87,6 @@
             },
             "content": "Hello world! Excited to join this platform.",
             "timestamp": "2025-11-23T15:52:08.356651",
-            "likes": 16,
             "comments": [
                 {
                     "comment_id": 1,
@@ -95,11 +127,24 @@
                     },
                     "text": "good",
                     "timestamp": "2025-11-23T21:11:25.915641"
+                },
+                {
+                    "comment_id": 5,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "good",
+                    "timestamp": "2025-11-25T01:48:41.052234"
                 }
+            ],
+            "liked_users": [
+                "sulaman"
             ]
         },
         {
-            "post_id": 6,
+            "post_id": 0,
             "user": {
                 "id": 2,
                 "username": "yasir",
@@ -107,7 +152,6 @@
             },
             "content": "Learning Python data structures today. Stacks are cool!",
             "timestamp": "2025-11-23T15:52:08.356652",
-            "likes": 6,
             "comments": [
                 {
                     "comment_id": 1,
@@ -119,6 +163,9 @@
                     "text": "good to know",
                     "timestamp": "2025-11-23T19:29:27.834958"
                 }
+            ],
+            "liked_users": [
+                0
             ]
         },
         {
@@ -130,8 +177,10 @@
             },
             "content": "hello guys",
             "timestamp": "2025-11-24T12:10:14.165767",
-            "likes": 2,
-            "comments": []
+            "comments": [],
+            "liked_users": [
+                0
+            ]
         },
         {
             "post_id": 8,
@@ -140,10 +189,48 @@
                 "username": "sulaman",
                 "email": "helloworld@gmail.com"
             },
-            "content": "coding",
+            "content": "coding is my favourite",
             "timestamp": "2025-11-24T12:13:11.206526",
-            "likes": 0,
-            "comments": []
+            "comments": [],
+            "liked_users": [
+                0,
+                "sulaman"
+            ]
+        },
+        {
+            "post_id": 9,
+            "user": {
+                "id": 0,
+                "username": "sulaman",
+                "email": "helloworld@gmail.com"
+            },
+            "content": "Tommorow is my project submission kind of nervous!",
+            "timestamp": "2025-11-25T01:28:49.796480",
+            "comments": [
+                {
+                    "comment_id": 1,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "good to know",
+                    "timestamp": "2025-11-25T01:35:38.031884"
+                },
+                {
+                    "comment_id": 2,
+                    "user": {
+                        "id": 0,
+                        "username": "sulaman",
+                        "email": "helloworld@gmail.com"
+                    },
+                    "text": "wow",
+                    "timestamp": "2025-11-25T01:39:11.773129"
+                }
+            ],
+            "liked_users": [
+                0
+            ]
         }
     ]
 }

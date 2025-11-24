@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image, ImageTk
 import os
 
 class SignupPage:
@@ -11,70 +11,90 @@ class SignupPage:
         master.geometry("900x650")
         ctk.set_appearance_mode("dark")
 
-        # -------- FULL BACKGROUND --------
-        self.frame = ctk.CTkFrame(master, fg_color="black")
+        # -------- MAIN COLORS --------
+        BG_COLOR = "#0E0E0E"
+
+        # -------- MAIN FRAME --------
+        self.frame = ctk.CTkFrame(master, fg_color=BG_COLOR)
         self.frame.pack(fill="both", expand=True)
 
-        # -------- LEFT & RIGHT FRAMES --------
-        self.left_frame = ctk.CTkFrame(self.frame, fg_color="black", width=450)
+        # -------- LEFT & RIGHT PANELS --------
+        self.left_frame = ctk.CTkFrame(self.frame, fg_color=BG_COLOR, width=450)
         self.left_frame.pack(side="left", fill="both", expand=True)
 
-        self.right_frame = ctk.CTkFrame(self.frame, fg_color="black", width=450)
+        self.right_frame = ctk.CTkFrame(self.frame, fg_color=BG_COLOR, width=450)
         self.right_frame.pack(side="right", fill="both", expand=True)
 
-        # -------- LEFT IMAGE --------
-        image_path = os.path.join("UI", "img", "signup.png")
-        original_image = Image.open(image_path)
+        # -------- LEFT IMAGE WITH PROPER BACKGROUND BLENDING --------
+        try:
+            image_path = os.path.join("UI", "img", "signupbg.png")
+            original_image = Image.open(image_path).convert("RGBA")
+            
+            # Create a dark background image with the same size as original
+            dark_bg = Image.new("RGBA", original_image.size, BG_COLOR)
+            
+            # Composite the transparent image over the dark background
+            blended_image = Image.alpha_composite(dark_bg, original_image)
+            
+            # Resize image to fit left panel while maintaining aspect ratio
+            frame_w, frame_h = 450, 650
+            img_ratio = blended_image.width / blended_image.height
+            frame_ratio = frame_w / frame_h
+        
+            if img_ratio > frame_ratio:
+                new_w = frame_w
+                new_h = int(frame_w / img_ratio)
+            else:
+                new_h = frame_h
+                new_w = int(frame_h * img_ratio)
+        
+            resized_img = blended_image.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            
+            # Convert to CTkImage
+            self.image = ctk.CTkImage(resized_img, size=(new_w, new_h))
+        
+            # Create image label
+            self.img_label = ctk.CTkLabel(
+                self.left_frame,
+                image=self.image,
+                text="",
+                fg_color=BG_COLOR
+            )
+            self.img_label.place(relx=0.5, rely=0.5, anchor="center")
+        
+        except Exception as e:
+            print("Image load error:", e)
+            # Fallback: just show a colored frame if image fails to load
+            fallback_frame = ctk.CTkFrame(
+                self.left_frame, 
+                fg_color=BG_COLOR, 
+                width=450, 
+                height=650
+            )
+            fallback_frame.place(relx=0.5, rely=0.5, anchor="center")
 
-        # Left frame size
-        frame_width, frame_height = 450, 650
+        # -------- RIGHT CONTENT --------
+        self.center_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
+        self.center_frame.place(relx=0.5, rely=0.55, anchor="center")
 
-        # Preserve aspect ratio
-        img_ratio = original_image.width / original_image.height
-        frame_ratio = frame_width / frame_height
-
-        if img_ratio > frame_ratio:
-            # Image is wider than frame ratio, fit width
-            new_width = frame_width
-            new_height = int(frame_width / img_ratio)
-        else:
-            # Image is taller than frame ratio, fit height
-            new_height = frame_height
-            new_width = int(frame_height * img_ratio)
-
-        resized_image = original_image.resize((new_width, new_height))
-        self.image = ctk.CTkImage(resized_image, size=(new_width, new_height))
-
-        img_label = ctk.CTkLabel(
-            self.left_frame,
-            image=self.image,
-            text="",
-            fg_color="black"
-        )
-        # Center the image
-        img_label.place(relx=0.5, rely=0.5, anchor="center")
-
-        # -------- RIGHT SIDE CONTENT --------
-        self.center_frame = ctk.CTkFrame(self.right_frame, fg_color="black")
-        self.center_frame.place(relx=0.5, rely=0.5, anchor="center")
-
-        # -------- HEADING --------
+        # -------- TITLE & SUBTITLE --------
         title = ctk.CTkLabel(
             self.center_frame,
-            text=" Join Friendify ",
-            font=("Segoe UI Black", 34),
+            text="Join Friendify",
+            font=("Segoe UI Black", 36),
             text_color="#FF8C00"
         )
-        title.pack(pady=(10, 25))
+        title.pack(pady=(5, 20))
 
         subtitle = ctk.CTkLabel(
             self.center_frame,
-            text="Join our community and connect with friends!",
-            font=("Segoe UI", 16),
-            text_color="#bbbbbb"
+            text="Create an account to connect with friends!",
+            font=("Segoe UI", 15),
+            text_color="#BFBFBF"
         )
-        subtitle.pack(pady=(0, 25))
+        subtitle.pack(pady=(0, 30))
 
+        # -------- INPUT FIELDS --------
         self.username = self.create_styled_input("👤", "Enter Username")
         self.email = self.create_styled_input("📧", "Enter Email")
         self.password = self.create_styled_input("🔒", "Enter Password", show="*")
@@ -83,14 +103,14 @@ class SignupPage:
         # -------- SIGN UP BUTTON --------
         signup_btn = ctk.CTkButton(
             self.center_frame,
-            text="Get Started",
+            text="Create Account",
             fg_color="#FF8C00",
-            hover_color="#e67e00",
+            hover_color="#E67E00",
             text_color="black",
-            width=250,
-            height=45,
-            font=("Segoe UI Semibold", 18),
-            corner_radius=12,
+            width=260,
+            height=48,
+            font=("Segoe UI Semibold", 17),
+            corner_radius=15,
             command=self.signup_action
         )
         signup_btn.pack(pady=25)
@@ -99,55 +119,69 @@ class SignupPage:
         login_btn = ctk.CTkButton(
             self.center_frame,
             text="Already have an account? Login",
-            font=("Segoe UI", 15),
+            font=("Segoe UI", 14),
             text_color="#FF8C00",
             fg_color="transparent",
-            hover_color="#333333",
+            hover_color="#2A2A2A",
             command=self.on_login_click
         )
         login_btn.pack(pady=5)
 
+    # ======================================================================
+    #           ⭐ INPUT FIELD DESIGN
+    # ======================================================================
     def create_styled_input(self, icon, placeholder, show=""):
-        outer_frame = ctk.CTkFrame(
+        container = ctk.CTkFrame(
             self.center_frame,
-            fg_color="#1a1a1a",
-            corner_radius=15
+            fg_color="#1A1A1A",
+            corner_radius=15,
+            width=330,
+            height=55
         )
-        outer_frame.pack(pady=10)
+        container.pack(pady=8)
+        container.pack_propagate(False)
 
+        # Icon
         icon_label = ctk.CTkLabel(
-            outer_frame,
+            container,
             text=icon,
-            font=("Arial", 20),
-            width=40,
-            text_color="#FF8C00"
+            font=("Segoe UI Symbol", 20),
+            text_color="#FF8C00",
+            width=45
         )
-        icon_label.pack(side="left", padx=8)
+        icon_label.pack(side="left", padx=(10, 5))
 
+        # Entry
         entry = ctk.CTkEntry(
-            outer_frame,
+            container,
             placeholder_text=placeholder,
-            width=280,
+            font=("Segoe UI", 15),
+            width=260,
             height=45,
+            corner_radius=12,
             border_width=0,
-            corner_radius=10,
-            fg_color="#2b2b2b",
+            fg_color="#262626",
             text_color="white",
-            placeholder_text_color="#888888",
+            placeholder_text_color="#757575",
             show=show
         )
-        entry.pack(side="left", padx=5, pady=8)
+        entry.pack(side="left", fill="x", padx=5, pady=6)
 
         return entry
 
+    # ======================================================================
+    #                     SIGNUP LOGIC
+    # ======================================================================
     def signup_action(self):
         email = self.email.get()
         password = self.password.get()
         confirm_password = self.confirm_password.get()
         username = self.username.get()
+
         if password != confirm_password:
             print("Error: Passwords do not match!")
             return
+
         self.on_signup(username, email, password)
 
     def on_login_click(self):

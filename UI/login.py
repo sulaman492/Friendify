@@ -1,38 +1,38 @@
 import customtkinter as ctk
 
 class LoginPage:
-    def __init__(self, master,on_signup,on_login):
+    def __init__(self, master, on_signup, on_login):
         self.master = master
-        self.on_signup=on_signup
-        self.on_login=on_login
+        self.on_signup = on_signup
+        self.on_login = on_login
 
-        # Window
         master.geometry("900x650")
         ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("dark-blue")
 
-        # -------- FULL SCREEN FRAME --------
-        self.frame = ctk.CTkFrame(master, fg_color="black")
+        BG_COLOR = "#0E0E0E"
+
+        # -------- MAIN BACKGROUND --------
+        self.frame = ctk.CTkFrame(master, fg_color=BG_COLOR)
         self.frame.pack(fill="both", expand=True)
 
-        # CENTER FRAME
-        self.center_frame = ctk.CTkFrame(self.frame, fg_color="black")
-        self.center_frame.place(relx=0.5, rely=0.5, anchor="center")
+        # -------- CENTER CONTENT --------
+        self.center_frame = ctk.CTkFrame(self.frame, fg_color=BG_COLOR)
+        self.center_frame.place(relx=0.5, rely=0.55, anchor="center")
 
         # -------- TITLE --------
         title = ctk.CTkLabel(
             self.center_frame,
-            text="★ Welcome Back ★",
-            font=("Segoe UI Black", 34),
-            text_color="orange"
+            text="Welcome Back",
+            font=("Segoe UI Black", 36),
+            text_color="#FF8C00"
         )
         title.pack(pady=(10, 20))
 
         subtitle = ctk.CTkLabel(
             self.center_frame,
             text="Login to continue your journey!",
-            font=("Segoe UI", 16),
-            text_color="#bbbbbb"
+            font=("Segoe UI", 15),
+            text_color="#BFBFBF"
         )
         subtitle.pack(pady=(0, 25))
 
@@ -44,66 +44,76 @@ class LoginPage:
         login_btn = ctk.CTkButton(
             self.center_frame,
             text="Login",
-            fg_color="orange",
-            hover_color="#c77000",
+            fg_color="#FF8C00",
+            hover_color="#E67E00",
             text_color="black",
-            width=250,
-            height=45,
-            font=("Segoe UI Semibold", 18),
-            corner_radius=12,
+            width=260,
+            height=48,
+            font=("Segoe UI Semibold", 17),
+            corner_radius=15,
             command=self.action_login
         )
         login_btn.pack(pady=25)
 
-        # -------- SIGNUP LINK --------
+        # -------- SIGNUP BUTTON --------
         signup_btn = ctk.CTkButton(
             self.center_frame,
             text="Don't have an account? Sign Up",
-            font=("Segoe UI", 15),
-            text_color="orange",
+            font=("Segoe UI", 14),
+            fg_color="transparent",
+            hover_color="#2A2A2A",
+            text_color="#FF8C00",
             command=self.on_click_signup
         )
         signup_btn.pack(pady=5)
 
-    # -------- INPUT FIELD CREATOR --------
+    # ======================================================================
+    #        ⭐ SAME PROFESSIONAL INPUT FIELD AS SIGNUP PAGE ⭐
+    # ======================================================================
     def create_styled_input(self, icon, placeholder, show=""):
-        outer_frame = ctk.CTkFrame(
+        container = ctk.CTkFrame(
             self.center_frame,
-            fg_color="#1a1a1a",
-            corner_radius=15
+            fg_color="#1A1A1A",
+            corner_radius=15,
+            width=330,
+            height=55
         )
-        outer_frame.pack(pady=10)
+        container.pack(pady=8)
+        container.pack_propagate(False)
 
+        # Icon
         icon_label = ctk.CTkLabel(
-            outer_frame,
+            container,
             text=icon,
-            font=("Arial", 20),
-            width=40,
-            text_color="orange"
+            font=("Segoe UI Symbol", 20),
+            text_color="#FF8C00",
+            width=45
         )
-        icon_label.pack(side="left", padx=8)
+        icon_label.pack(side="left", padx=(10, 5))
 
+        # Entry
         entry = ctk.CTkEntry(
-            outer_frame,
+            container,
             placeholder_text=placeholder,
-            width=280,
+            font=("Segoe UI", 15),
+            width=260,
             height=45,
+            corner_radius=12,
             border_width=0,
-            corner_radius=10,
-            fg_color="#2b2b2b",
+            fg_color="#262626",
             text_color="white",
-            placeholder_text_color="#aaaaaa",
+            placeholder_text_color="#757575",
             show=show
         )
-        entry.pack(side="left", padx=5, pady=8)
+        entry.pack(side="left", fill="x", padx=5, pady=6)
 
         return entry
 
+    # -------- NAVIGATION FUNCTIONS --------
     def on_click_signup(self):
         self.on_signup()
 
     def action_login(self):
-        email=self.email.get()
-        password=self.password.get()
-
-        self.on_login(email,password)
+        email = self.email.get()
+        password = self.password.get()
+        self.on_login(email, password)

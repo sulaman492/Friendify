@@ -9,6 +9,7 @@ class Post:
         self.likes = likes
         self.comments = comments or []  # must be Comment objects
         self.timestamp = timestamp or datetime.now()
+        self.liked_users = set()
 
     def add_comment(self, comment):
         self.comments.append(comment)

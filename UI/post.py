@@ -21,14 +21,18 @@ class PostPage:
         self.title_label = ctk.CTkLabel(
             self.create_post_frame,
             text=f"What's on your mind, {self.current_user.username}?",
-            font=("Segoe UI", 16)
+            font=("Segoe UI", 16),
+            text_color="orange"
         )
         self.title_label.pack(pady=(10,5), padx=10, anchor="w")
 
         self.post_entry = ctk.CTkEntry(
             self.create_post_frame,
             placeholder_text="Write something...",
-            width=500
+            width=500,
+            fg_color="#2b2b2b",
+            text_color="white",
+            placeholder_text_color="#888888"
         )
         self.post_entry.pack(pady=10, padx=10, fill="x")
 
@@ -45,11 +49,11 @@ class PostPage:
         self.footer = ctk.CTkFrame(self.frame, fg_color="#1a1a1a")
         self.footer.pack(side="bottom", fill="x")
 
-        # Undo button always visible
         self.undo_btn = ctk.CTkButton(
             self.footer,
             text="Undo Last Delete",
             fg_color="green",
+            hover_color="#3b9c3f",
             width=200,
             command=self.on_undo_post
         )
@@ -93,25 +97,52 @@ class PostPage:
         card = ctk.CTkFrame(self.posts_container, fg_color="#2b2b2b", corner_radius=10)
         card.pack(fill="x", pady=10, padx=10)
 
-        user_label = ctk.CTkLabel(card, text=post.user.username, font=("Segoe UI", 14, "bold"))
+        user_label = ctk.CTkLabel(
+            card,
+            text=post.user.username,
+            font=("Segoe UI", 14, "bold"),
+            text_color="orange"
+        )
         user_label.pack(anchor="w", padx=10, pady=(10, 0))
 
-        content_label = ctk.CTkLabel(card, text=post.content, font=("Segoe UI", 13), wraplength=550)
+        content_label = ctk.CTkLabel(
+            card,
+            text=post.content,
+            font=("Segoe UI", 13),
+            wraplength=550,
+            text_color="white"
+        )
         content_label.pack(anchor="w", padx=10, pady=5)
 
-        time_label = ctk.CTkLabel(card, text=str(post.timestamp).split(".")[0],
-                                  font=("Segoe UI", 11), text_color="gray")
+        time_label = ctk.CTkLabel(
+            card,
+            text=str(post.timestamp).split(".")[0],
+            font=("Segoe UI", 11),
+            text_color="#bbbbbb"
+        )
         time_label.pack(anchor="w", padx=10, pady=(0, 10))
 
         btn_frame = ctk.CTkFrame(card, fg_color="transparent")
         btn_frame.pack(anchor="e", pady=(0,10), padx=10)
 
-        edit_btn = ctk.CTkButton(btn_frame, text="Edit", width=60,
-                                 fg_color="#4a90e2", command=lambda: self.edit_post_ui(post))
+        edit_btn = ctk.CTkButton(
+            btn_frame,
+            text="Edit",
+            width=60,
+            fg_color="#4a90e2",
+            hover_color="#357ABD",
+            command=lambda: self.edit_post_ui(post)
+        )
         edit_btn.grid(row=0, column=0, padx=5)
 
-        delete_btn = ctk.CTkButton(btn_frame, text="Delete", width=60,
-                                   fg_color="#e04a4a", command=lambda: self.on_delete_post(post.post_id))
+        delete_btn = ctk.CTkButton(
+            btn_frame,
+            text="Delete",
+            width=60,
+            fg_color="#e04a4a",
+            hover_color="#c0392b",
+            command=lambda: self.on_delete_post(post.post_id)
+        )
         delete_btn.grid(row=0, column=1, padx=5)
 
     # -------------------------------------------------------------------
@@ -121,10 +152,17 @@ class PostPage:
         edit_win = ctk.CTkToplevel()
         edit_win.title("Edit Post")
         edit_win.geometry("400x250")
+        edit_win.configure(fg_color="#1a1a1a")
         edit_win.grab_set()
         edit_win.focus_force()
 
-        entry = ctk.CTkEntry(edit_win, width=350)
+        entry = ctk.CTkEntry(
+            edit_win,
+            width=350,
+            fg_color="#2b2b2b",
+            text_color="white",
+            placeholder_text_color="#888888"
+        )
         entry.insert(0, post.content)
         entry.pack(pady=20)
 
@@ -133,5 +171,11 @@ class PostPage:
             self.on_edit_post(post.post_id, new_content)
             edit_win.destroy()
 
-        save_btn = ctk.CTkButton(edit_win, text="Save", command=confirm)
+        save_btn = ctk.CTkButton(
+            edit_win,
+            text="Save",
+            fg_color="orange",
+            hover_color="#c77000",
+            command=confirm
+        )
         save_btn.pack(pady=10)
