@@ -22,7 +22,29 @@ class FriendLinkedList:
                 temp=temp.next
             temp.next=new_node
     
+    def sort_friends(self):
+        # If list is empty or has only one friend — nothing to sort
+        if not self.head or not self.head.next:
+            return
     
+        # Step 1: Extract nodes into a list
+        nodes = []
+        temp = self.head
+        while temp:
+            nodes.append(temp)
+            temp = temp.next
+    
+        # Step 2: Sort nodes by friend_name A → Z
+        nodes.sort(key=lambda x: x.friend_name.lower())
+    
+        # Step 3: Rebuild linked list
+        self.head = nodes[0]
+        temp = self.head
+        for node in nodes[1:]:
+            temp.next = node
+            temp = node
+    
+        temp.next = None    
 
 class Friend:
     def __init__(self,user_id1,user_id2,status="pending"):

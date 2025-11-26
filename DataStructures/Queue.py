@@ -1,5 +1,5 @@
 class Queue:
-    """A simple queue implemented using a Python list (FIFO)."""
+
     def __init__(self):
         self.items = []
 

@@ -25,59 +25,25 @@ class SignupPage:
         self.right_frame = ctk.CTkFrame(self.frame, fg_color=BG_COLOR, width=450)
         self.right_frame.pack(side="right", fill="both", expand=True)
 
-        # -------- LEFT IMAGE WITH PROPER BACKGROUND BLENDING --------
-        try:
-            image_path = os.path.join("UI", "img", "signupbg.png")
-            original_image = Image.open(image_path).convert("RGBA")
-            
-            # Create a dark background image with the same size as original
-            dark_bg = Image.new("RGBA", original_image.size, BG_COLOR)
-            
-            # Composite the transparent image over the dark background
-            blended_image = Image.alpha_composite(dark_bg, original_image)
-            
-            # Resize image to fit left panel while maintaining aspect ratio
-            frame_w, frame_h = 450, 650
-            img_ratio = blended_image.width / blended_image.height
-            frame_ratio = frame_w / frame_h
-        
-            if img_ratio > frame_ratio:
-                new_w = frame_w
-                new_h = int(frame_w / img_ratio)
-            else:
-                new_h = frame_h
-                new_w = int(frame_h * img_ratio)
-        
-            resized_img = blended_image.resize((new_w, new_h), Image.Resampling.LANCZOS)
-            
-            # Convert to CTkImage
-            self.image = ctk.CTkImage(resized_img, size=(new_w, new_h))
-        
-            # Create image label
-            self.img_label = ctk.CTkLabel(
-                self.left_frame,
-                image=self.image,
-                text="",
-                fg_color=BG_COLOR
-            )
-            self.img_label.place(relx=0.5, rely=0.5, anchor="center")
-        
-        except Exception as e:
-            print("Image load error:", e)
-            # Fallback: just show a colored frame if image fails to load
-            fallback_frame = ctk.CTkFrame(
-                self.left_frame, 
-                fg_color=BG_COLOR, 
-                width=450, 
-                height=650
-            )
-            fallback_frame.place(relx=0.5, rely=0.5, anchor="center")
+        # =====================================================================
+        #                    ⭐ LEFT SIDE — ONLY CENTERED TITLE
+        # =====================================================================
 
-        # -------- RIGHT CONTENT --------
+        left_title = ctk.CTkLabel(
+            self.left_frame,
+            text="Welcome to Friendify 👋",
+            font=("Segoe UI Black", 38),
+            text_color="#FF8C00"
+        )
+        left_title.place(relx=0.5, rely=0.5, anchor="center")
+
+        # =====================================================================
+        #                       ⭐ RIGHT SIDE CONTENT
+        # =====================================================================
         self.center_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
         self.center_frame.place(relx=0.5, rely=0.55, anchor="center")
 
-        # -------- TITLE & SUBTITLE --------
+        # -------- TITLE --------
         title = ctk.CTkLabel(
             self.center_frame,
             text="Join Friendify",
@@ -141,7 +107,6 @@ class SignupPage:
         container.pack(pady=8)
         container.pack_propagate(False)
 
-        # Icon
         icon_label = ctk.CTkLabel(
             container,
             text=icon,
@@ -151,7 +116,6 @@ class SignupPage:
         )
         icon_label.pack(side="left", padx=(10, 5))
 
-        # Entry
         entry = ctk.CTkEntry(
             container,
             placeholder_text=placeholder,
@@ -174,9 +138,9 @@ class SignupPage:
     # ======================================================================
     def signup_action(self):
         email = self.email.get()
-        password = self.password.get()
-        confirm_password = self.confirm_password.get()
         username = self.username.get()
+        password = self.password.get().strip()
+        confirm_password = self.confirm_password.get().strip()
 
         if password != confirm_password:
             print("Error: Passwords do not match!")

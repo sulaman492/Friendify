@@ -56,53 +56,61 @@ class ProfilePage:
         email_label.pack(pady=(0, 20))
 
         # ---------------- INPUT FIELDS ----------------
+        first_name_val = getattr(self.user, "first_name", "")
         self.first_name = ctk.CTkEntry(
             self.center_frame,
-            placeholder_text="First Name",
+            placeholder_text="",
             width=350,
             fg_color="#2b2b2b",
             text_color="white"
         )
-        first = getattr(self.user, "first_name", "")
-        if first:
-            self.first_name.insert(0, first)
+        if first_name_val:
+            self.first_name.insert(0, first_name_val)
+        else:
+            self.first_name.insert(0, "First Name")
         self.first_name.pack(pady=8)
 
+        last_name_val = getattr(self.user, "last_name", "")
         self.last_name = ctk.CTkEntry(
             self.center_frame,
-            placeholder_text="Last Name",
+            placeholder_text="",
             width=350,
             fg_color="#2b2b2b",
             text_color="white"
         )
-        last = getattr(self.user, "last_name", "")
-        if last:
-            self.last_name.insert(0, last)
+        if last_name_val:
+            self.last_name.insert(0, last_name_val)
+        else:
+            self.last_name.insert(0, "Last Name")
         self.last_name.pack(pady=8)
 
+        country_val = getattr(self.user, "country", "")
         self.country = ctk.CTkEntry(
             self.center_frame,
-            placeholder_text="Country",
+            placeholder_text="",
             width=350,
             fg_color="#2b2b2b",
             text_color="white"
         )
-        country = getattr(self.user, "country", "")
-        if country:
-            self.country.insert(0, country)
+        if country_val:
+            self.country.insert(0, country_val)
+        else:
+            self.country.insert(0, "Country")
         self.country.pack(pady=8)
 
+        bio_val = getattr(self.user, "bio", "")
         self.bio = ctk.CTkEntry(
             self.center_frame,
-            placeholder_text="Bio",
+            placeholder_text="",
             width=350,
             height=100,
             fg_color="#2b2b2b",
             text_color="white"
         )
-        bio = getattr(self.user, "bio", "")
-        if bio:
-            self.bio.insert(0, bio)
+        if bio_val:
+            self.bio.insert(0, bio_val)
+        else:
+            self.bio.insert(0, "Bio")
         self.bio.pack(pady=8)
 
         # ---------------- SAVE BUTTON ----------------
@@ -123,4 +131,18 @@ class ProfilePage:
         country = self.country.get()
         bio = self.bio.get()
 
+        # Update database
         self.on_save(first_name, last_name, country, bio)
+
+        # Update UI fields to reflect saved data
+        self.first_name.delete(0, "end")
+        self.first_name.insert(0, first_name)
+
+        self.last_name.delete(0, "end")
+        self.last_name.insert(0, last_name)
+
+        self.country.delete(0, "end")
+        self.country.insert(0, country)
+
+        self.bio.delete(0, "end")
+        self.bio.insert(0, bio)

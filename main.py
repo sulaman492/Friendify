@@ -67,8 +67,10 @@ def handle_send_request(sender_id, receiver_id):
 def handle_get_all_post():
     return pm.get_all_posts()
 
-def handle_create_post(content):
+def handle_create_post(content,post_page):
     pm.create_post(user,content) 
+    user_posts = [p for p in pm.posts if p.user.id == user.id]
+    post_page.load_posts(user_posts)
 
 def show_login():
     clear_window()
@@ -80,14 +82,7 @@ def show_signup():
 
 def show_home_page():
     clear_window()
-    home_page = HomePage(
-        root,
-        user,
-        on_profile=show_profile,
-        on_post=show_users_post,
-        on_feed_load=handle_load_feed,  # call the new function
-        on_friends=show_friends
-    )
+    home_page=HomePage(root,user,on_profile=show_profile,on_post=show_users_post,on_feed_load=lambda target_frame:show_feed(target_frame),on_friends=show_friends)
 
 def show_feed(target_frame):
     for widget in target_frame.winfo_children():
@@ -109,7 +104,17 @@ def show_profile(target_frame):
 def show_users_post(target_frame):
     for widget in target_frame.winfo_children():
         widget.destroy()
-    post_page=PostPage(target_frame,user,on_create_post=handle_create_post,on_edit_post=lambda post_id, new_content: handle_edit_post(post_id, new_content, post_page),on_delete_post=lambda post_id: handle_delete_post(post_id, post_page),on_undo_post=lambda: handle_undo_post(post_page), on_get_posts=handle_get_all_post)
+    
+    post_page = PostPage(
+        target_frame,
+        user,
+        on_create_post=lambda content: handle_create_post(content, post_page),
+        on_edit_post=lambda post_id, new_content: handle_edit_post(post_id, new_content, post_page),
+        on_delete_post=lambda post_id: handle_delete_post(post_id, post_page),
+        on_undo_post=lambda: handle_undo_post(post_page),
+        on_get_posts=handle_get_all_post
+    )
+
     user_posts = [p for p in pm.posts if p.user.id == user.id]
     post_page.load_posts(user_posts)
     

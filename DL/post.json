@@ -162,6 +162,16 @@
                     },
                     "text": "good to know",
                     "timestamp": "2025-11-23T19:29:27.834958"
+                },
+                {
+                    "comment_id": 2,
+                    "user": {
+                        "id": 4,
+                        "username": "sulaman",
+                        "email": "sulamanshahzad492@gmail.com"
+                    },
+                    "text": "sound cool",
+                    "timestamp": "2025-11-25T11:17:43.684549"
                 }
             ],
             "liked_users": [
@@ -179,7 +189,8 @@
             "timestamp": "2025-11-24T12:10:14.165767",
             "comments": [],
             "liked_users": [
-                0
+                0,
+                "sulaman"
             ]
         },
         {
@@ -229,8 +240,35 @@
                 }
             ],
             "liked_users": [
-                0
+                0,
+                "sulaman"
             ]
+        },
+        {
+            "post_id": 10,
+            "user": {
+                "id": 4,
+                "username": "sulaman",
+                "email": "sulamanshahzad492@gmail.com"
+            },
+            "content": "hello guys new on this platform!",
+            "timestamp": "2025-11-25T11:16:34.911523",
+            "comments": [],
+            "liked_users": [
+                "sulaman"
+            ]
+        },
+        {
+            "post_id": 11,
+            "user": {
+                "id": 5,
+                "username": "testuser123",
+                "email": "test@gmail.com"
+            },
+            "content": "i am here to test this app",
+            "timestamp": "2025-11-26T10:49:47.800712",
+            "comments": [],
+            "liked_users": []
         }
     ]
 }

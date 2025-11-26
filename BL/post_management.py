@@ -34,7 +34,7 @@ class PostManagement:
                         comments=[Comment.from_dict(c) for c in p.get("comments", [])],
                         timestamp=datetime.fromisoformat(p["timestamp"])
                     )
-                    # Set liked_users AFTER creating the Post
+                    
                     post.liked_users = set(p.get("liked_users", []))
 
                     self.posts.enqueue(post)
@@ -159,4 +159,18 @@ class PostManagement:
             self.save_post()
 
     def sort_by_trending(self):
-        return sorted(self.posts.items, key=lambda post: post.likes + post.comment_count, reverse=True)
+        posts = self.posts.items[:]  # copy list
+        n = len(posts)
+    
+        # Bubble Sort based on (likes + comment_count)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                score_current = posts[j].likes + posts[j].comment_count
+                score_next = posts[j + 1].likes + posts[j + 1].comment_count
+    
+                # For descending order (higher trending first)
+                if score_current < score_next:
+                    posts[j], posts[j + 1] = posts[j + 1], posts[j]
+    
+        return posts
+

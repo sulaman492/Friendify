@@ -58,6 +58,19 @@ class FriendsPage:
         )
         refresh_btn.grid(row=0, column=2, padx=10, pady=10)
 
+        # ---------------- SORT FRIENDS DROPDOWN ----------------
+        self.sort_option = ctk.CTkOptionMenu(
+            top_bar,
+            values=["Recently Added", "Name (A–Z)", "Name (Z–A)", "Username (A–Z)"],
+            fg_color="#262626",
+            button_color="#FF8C00",
+            button_hover_color="#E67A00",
+            text_color="white",
+            width=160,
+            command=lambda _: self.load_friends()
+        )
+        self.sort_option.grid(row=0, column=3, padx=10, pady=10)
+
         # ---------------- SCROLL AREA ----------------
         self.container = ctk.CTkScrollableFrame(
             self.frame,
@@ -150,7 +163,7 @@ class FriendsPage:
         )
         ignore_btn.pack(pady=5, fill="x")
 
-    # ---------------- LOAD FRIENDS ----------------
+    # ---------------- LOAD FRIENDS (WITH SORTING) ----------------
     def load_friends(self):
         self.clear_feed()
         friends = self.friend_manager.load_friend(self.current_user.id)
@@ -164,12 +177,32 @@ class FriendsPage:
             ).pack(pady=20)
             return
 
+        # Convert linked list → python list
+        friend_list = []
         temp = friends.head
         while temp:
             user_obj = next((u for u in self.all_users if u.id == temp.friend_id), None)
             if user_obj:
-                self.create_friend_card_ui(user_obj)
+                friend_list.append(user_obj)
             temp = temp.next
+
+        # ---------------- SORTING LOGIC ----------------
+        option = self.sort_option.get()
+
+        if option == "Name (A–Z)":
+            friend_list.sort(key=lambda u: (u.first_name.lower(), u.last_name.lower()))
+
+        elif option == "Name (Z–A)":
+            friend_list.sort(key=lambda u: (u.first_name.lower(), u.last_name.lower()), reverse=True)
+
+        elif option == "Username (A–Z)":
+            friend_list.sort(key=lambda u: u.username.lower())
+
+        # "Recently Added" → no sorting (leave original order)
+
+        # Display sorted friends
+        for user in friend_list:
+            self.create_friend_card_ui(user)
 
     # ---------------- FRIEND CARD UI ----------------
     def create_friend_card_ui(self, user):

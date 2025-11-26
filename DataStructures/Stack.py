@@ -1,5 +1,5 @@
 class Stack:
-    """A simple stack implemented using a Python list (LIFO)."""
+    
     def __init__(self, max_size=None):
         self.items = []
         self.max_size = max_size
